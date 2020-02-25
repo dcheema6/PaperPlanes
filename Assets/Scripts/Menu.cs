@@ -9,8 +9,13 @@ public class Menu : MonoBehaviour
     private CanvasGroup fadeGroup;
     private float fadeInSpeed = 0.33f;
 
+    public RectTransform menuContainer;
+    public Transform levelPanel;
+
     public Transform colorPanel;
     public Transform trailPanel;
+
+    private Vector3 menuPosition;
     
     void Start()
     {
@@ -20,7 +25,7 @@ public class Menu : MonoBehaviour
         // Start with a white screen
         fadeGroup.alpha = 1;
     
-        // Add button on-click events to shop buttons
+        InitLevelPanel();
         InitShop();
     }
 
@@ -28,6 +33,26 @@ public class Menu : MonoBehaviour
     {
         // Fade-in
         fadeGroup.alpha = 1 - Time.timeSinceLevelLoad * fadeInSpeed;
+
+        // Menu navigation
+        menuContainer.anchoredPosition3D = Vector3.Lerp(menuContainer.anchoredPosition3D, menuPosition, 0.1f);
+    }
+
+    private void InitLevelPanel()
+    {
+        // Check references
+        if (levelPanel == null)
+            Debug.Log("Level panel refence(s) has not been assigned in inspector");
+
+        // Add event listerners to every child of color/trail panel
+        int i = 0;
+        foreach (Transform t in levelPanel)
+        {
+            int currInd = i;
+            Button b = t.GetComponent<Button> ();
+            b.onClick.AddListener(() => OnLevelSelect(currInd));
+            i++;
+        }
     }
 
     private void InitShop()
@@ -56,15 +81,48 @@ public class Menu : MonoBehaviour
         }
     }
 
+    private void NavigateTo(int mInd)
+    {
+        switch (mInd)
+        {
+            // Main menu
+            default:
+            case 0:
+                menuPosition = Vector3.zero;
+                break;
+            // Play menu
+            case 1:
+                menuPosition = Vector3.right * 1280;
+                break;
+            // Shop menu
+            case 2:
+                menuPosition = Vector3.left * 1280;
+                break;
+        }
+    }
+
     // Buttton Controls
+    public void OnBack()
+    {
+        NavigateTo(0);
+        Debug.Log("Back");
+    }
+
     public void OnPlay()
     {
+        NavigateTo(1);
         Debug.Log("Play");
     }
 
-    public void OnExit()
+    public void OnShop()
     {
-        Debug.Log("Exit");
+        NavigateTo(2);
+        Debug.Log("Shop");
+    }
+
+    private void OnLevelSelect(int i)
+    {
+        Debug.Log("Selecting trail: " + i);
     }
     
     private void OnColorSelect(int i)

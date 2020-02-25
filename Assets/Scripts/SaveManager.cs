@@ -84,6 +84,15 @@ public class SaveManager : MonoBehaviour
         game.trail |= 1 << ind;
     }
 
+    public void CompleteLevel(int ind)
+    {
+        if (game.levelCompleted == ind)
+        {
+            game.levelCompleted++;
+            Save();
+        }
+    }
+
     public void ResetSave()
     {
         PlayerPrefs.DeleteKey("save");

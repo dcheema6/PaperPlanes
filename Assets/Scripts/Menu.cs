@@ -32,12 +32,11 @@ public class Menu : MonoBehaviour
     {
         // Grab the only one CanvasGroup in the scene
         fadeGroup = FindObjectOfType<CanvasGroup>();
-
         // Start with a white screen
         fadeGroup.alpha = 1;
-
         SaveManager.Instance.game.gold = 100; // For dev only
 
+        MoveCameraTo(GameManager.Instance.menu);
         UpdateGoldText();    
         InitLevelPanel();
         InitShop();
@@ -75,6 +74,20 @@ public class Menu : MonoBehaviour
             int currInd = i;
             Button b = t.GetComponent<Button> ();
             b.onClick.AddListener(() => OnLevelSelect(currInd));
+
+            Image img = t.GetComponent<Image> ();
+            if (i <= SaveManager.Instance.game.levelCompleted)
+            {
+                if (i == SaveManager.Instance.game.levelCompleted)
+                    img.color  = Color.white;
+                else
+                    img.color = Color.green;
+            }
+            else
+            {
+                b.interactable = false;
+                img.color = Color.grey;
+            }
             i++;
         }
     }
@@ -111,6 +124,12 @@ public class Menu : MonoBehaviour
 
             i++;
         }
+    }
+
+    private void MoveCameraTo(int mInd)
+    {
+        NavigateTo(mInd);
+        menuContainer.anchoredPosition3D = menuPosition;
     }
 
     private void NavigateTo(int mInd)
@@ -172,8 +191,8 @@ public class Menu : MonoBehaviour
 
     private void OnLevelSelect(int i)
     {
+        GameManager.Instance.currLevel = i;
         SceneManager.LoadScene("Game");
-        Debug.Log("Selecting trail: " + i);
     }
     
     private void OnColorSelect(int i)

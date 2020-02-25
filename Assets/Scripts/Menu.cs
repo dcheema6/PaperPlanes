@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class Menu : MonoBehaviour
 {
-    private CanvasGroup fadeGroup;
+    private CanvasGroup fade;
     private float fadeInSpeed = 0.33f;
 
     public RectTransform menuContainer;
@@ -27,13 +27,18 @@ public class Menu : MonoBehaviour
     private int activeTrailIndex;
 
     private Vector3 menuPosition;
+
+    public AnimationCurve levelEnterZoomCurve;
+    private bool isLevelEnter = false;
+    private float zoomTime = 3.0f;
+    private float zoomTransition;
     
     void Start()
     {
         // Grab the only one CanvasGroup in the scene
-        fadeGroup = FindObjectOfType<CanvasGroup>();
+        fade = FindObjectOfType<CanvasGroup>();
         // Start with a white screen
-        fadeGroup.alpha = 1;
+        fade.alpha = 1;
         SaveManager.Instance.game.gold = 100; // For dev only
 
         MoveCameraTo(GameManager.Instance.menu);
@@ -55,10 +60,13 @@ public class Menu : MonoBehaviour
     void Update()
     {
         // Fade-in
-        fadeGroup.alpha = 1 - Time.timeSinceLevelLoad * fadeInSpeed;
-
+        fade.alpha = 1 - Time.timeSinceLevelLoad * fadeInSpeed;
         // Menu navigation
         menuContainer.anchoredPosition3D = Vector3.Lerp(menuContainer.anchoredPosition3D, menuPosition, 0.1f);
+
+        // Entering level zoom
+        if (isLevelEnter)
+            DoLevelTranstion();
     }
 
     private void InitLevelPanel()
@@ -123,6 +131,32 @@ public class Menu : MonoBehaviour
             img.color = SaveManager.Instance.IsTrailOwned(i) ? Color.white : new Color(0.75f, 0.75f, 0.75f);
 
             i++;
+        }
+    }
+
+    private void DoLevelTranstion()
+    {
+        // Add to the zoomTranstion
+        zoomTransition += (1/zoomTime)*Time.deltaTime;
+        // Change scale using animation curve
+        menuContainer.localScale = Vector3.Lerp(Vector3.one, Vector3.one * 5, levelEnterZoomCurve.Evaluate(zoomTransition));
+        // Change the desired menu position, so it can follow the scale up
+        // This zooms in the center
+        Vector3 desiredPostion = menuPosition * 5;
+        // This adds to the specific postion on the level canvas
+        RectTransform rt = levelPanel.GetChild(GameManager.Instance.currLevel).GetComponent<RectTransform>();
+        desiredPostion -= rt.localPosition * 5;
+        // ovveride previoys menu position update
+        menuContainer.anchoredPosition3D = Vector3.Lerp(menuPosition, desiredPostion, levelEnterZoomCurve.Evaluate(zoomTransition));
+
+        // Fade to white screen, overriding previous fade update
+        fade.alpha = zoomTransition;
+
+        // are animation complete
+        if (zoomTransition >= 1)
+        {
+            // Enter the level
+            SceneManager.LoadScene("Game");
         }
     }
 
@@ -192,7 +226,7 @@ public class Menu : MonoBehaviour
     private void OnLevelSelect(int i)
     {
         GameManager.Instance.currLevel = i;
-        SceneManager.LoadScene("Game");
+        isLevelEnter = true;
     }
     
     private void OnColorSelect(int i)

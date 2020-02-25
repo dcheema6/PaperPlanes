@@ -9,6 +9,7 @@ public class SaveManager : MonoBehaviour
 
     void Awake()
     {
+        // ResetSave(); // For dev purposes
         DontDestroyOnLoad(gameObject);
         Instance = this;
         Load();
@@ -31,5 +32,60 @@ public class SaveManager : MonoBehaviour
             Save();
             Debug.Log("No save game found! Saving...");
         }
+    }
+
+    public bool IsColorOwned(int ind)
+    {
+        return (game.color & (1 << ind)) != 0;
+    }
+
+    public bool IsTrailOwned(int ind)
+    {
+        return (game.trail & (1 << ind)) != 0;
+    }
+
+    public bool BuyColor(int ind, int cost)
+    {
+        if (game.gold >= cost)
+        {
+            game.gold -= cost;
+            UnlockColor(ind);
+            Save();
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public bool BuyTrail(int ind, int cost)
+    {
+        if (game.gold >= cost)
+        {
+            game.gold -= cost;
+            UnlockTrail(ind);
+            Save();
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void UnlockColor(int ind)
+    {
+        game.color |= 1 << ind;
+    }
+
+    public void UnlockTrail(int ind)
+    {
+        game.trail |= 1 << ind;
+    }
+
+    public void ResetSave()
+    {
+        PlayerPrefs.DeleteKey("save");
     }
 }

@@ -52,7 +52,6 @@ public class Menu : MonoBehaviour
         fade = FindObjectOfType<CanvasGroup>();
         // Start with a white screen
         fade.alpha = 1;
-        SaveManager.Instance.game.gold = 100; // For dev only
 
         MoveCameraTo(GameManager.Instance.menu);
         UpdateGoldText();    

@@ -11,6 +11,8 @@ public class GameController : MonoBehaviour
 
     void Start()
     {
+        SceneManager.LoadScene(GameManager.Instance.currLevel.ToString(), LoadSceneMode.Additive);
+
         fade = FindObjectOfType<CanvasGroup>();
         fade.alpha = 1;
         gameStarted = false;

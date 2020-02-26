@@ -29,6 +29,7 @@ public class SaveManager : MonoBehaviour
         else
         {
             game = new SaveGame();
+            game.gold = 100; // For dev only
             Save();
             Debug.Log("No save game found! Saving...");
         }

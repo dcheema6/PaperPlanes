@@ -21,16 +21,15 @@ public class GameManager : MonoBehaviour
 
     public Vector3 GetPlayerInput()
     {
-        float stepSize = 0.1f;
+        Vector3 r = Vector3.zero;
         if (Input.GetKey(KeyCode.UpArrow))
-            return Vector3.up * stepSize;
-        else if (Input.GetKey(KeyCode.DownArrow))
-            return Vector3.down * stepSize;
-        else if (Input.GetKey(KeyCode.LeftArrow))
-            return Vector3.left * stepSize;
-        else if (Input.GetKey(KeyCode.RightArrow))
-            return Vector3.right * stepSize;
-        else
-            return Vector3.zero;
+            r += Vector3.back;
+        if (Input.GetKey(KeyCode.DownArrow))
+            r +=  Vector3.forward;
+        if (Input.GetKey(KeyCode.LeftArrow))
+            r +=  Vector3.down;
+        if (Input.GetKey(KeyCode.RightArrow))
+            r +=  Vector3.up;
+        return r;
     }
 }

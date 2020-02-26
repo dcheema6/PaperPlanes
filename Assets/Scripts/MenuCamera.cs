@@ -21,7 +21,9 @@ public class MenuCamera : MonoBehaviour
 
     void Update()
     {
-        transform.localPosition = Vector3.Lerp(transform.localPosition, endPoint, 0.1f);
+        Vector3 input = GameManager.Instance.GetPlayerInput();
+
+        transform.localPosition = Vector3.Lerp(transform.localPosition, endPoint + input, 0.1f);
         transform.localRotation = Quaternion.Lerp(transform.localRotation, endRotation, 0.1f);
     }
 

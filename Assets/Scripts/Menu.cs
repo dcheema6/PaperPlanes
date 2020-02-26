@@ -119,7 +119,9 @@ public class Menu : MonoBehaviour
             b.onClick.AddListener(() => OnColorSelect(currInd));
 
             Image img = t.GetComponent<Image>();
-            img.color = SaveManager.Instance.IsColorOwned(i) ? Color.white : new Color(0.75f, 0.75f, 0.75f);
+            img.color = SaveManager.Instance.IsColorOwned(i)
+                ? GameManager.Instance.planeColors[currInd]
+                : Color.Lerp(GameManager.Instance.planeColors[currInd], new Color(0,0,0,1), 0.3f);
 
             i++;
         }
@@ -132,7 +134,9 @@ public class Menu : MonoBehaviour
             b.onClick.AddListener(() => OnTrailSelect(currInd));
             
             Image img = t.GetComponent<Image>();
-            img.color = SaveManager.Instance.IsTrailOwned(i) ? Color.white : new Color(0.75f, 0.75f, 0.75f);
+            img.color = SaveManager.Instance.IsTrailOwned(i)
+                ? GameManager.Instance.planeColors[currInd]
+                : Color.Lerp(GameManager.Instance.planeColors[currInd], new Color(0,0,0,1), 0.3f);
 
             i++;
         }
@@ -196,8 +200,9 @@ public class Menu : MonoBehaviour
     private void SetColor(int ind)
     {
         activeColorIndex = ind;
-        colorButtonText.text = "Current";
         SaveManager.Instance.game.activeColor = ind;
+        GameManager.Instance.planeMaterial.color = GameManager.Instance.planeColors[ind];
+        colorButtonText.text = "Current";
         SaveManager.Instance.Save();
     }
 
@@ -297,7 +302,7 @@ public class Menu : MonoBehaviour
             if (SaveManager.Instance.BuyColor(selectedColorIndex, colorCost[selectedColorIndex]))
             {
                 SetColor(selectedColorIndex);
-                colorPanel.GetChild(selectedColorIndex).GetComponent<Image>().color = Color.white;
+                colorPanel.GetChild(selectedColorIndex).GetComponent<Image>().color = GameManager.Instance.planeColors[selectedColorIndex];
                 UpdateGoldText();
             }
             else

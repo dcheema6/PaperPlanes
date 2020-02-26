@@ -149,6 +149,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a3272d00893e9545af683bfcdf5e5c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  planeMaterial: {fileID: 2100000, guid: 91349c8e2eae87243bec5368a657409e, type: 2}
+  planeColors:
+  - {r: 0.990566, g: 0.990566, b: 0.990566, a: 1}
+  - {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  - {r: 0.9339623, g: 0.4273318, b: 0.4273318, a: 1}
+  - {r: 0.6519704, g: 1, b: 0.495283, a: 1}
+  - {r: 0.32226774, g: 0.54802513, b: 0.9622642, a: 1}
+  - {r: 1, g: 0.95853686, b: 0.25, a: 1}
+  - {r: 1, g: 0, b: 0.52147484, a: 1}
+  - {r: 0.06978607, g: 0, b: 1, a: 1}
+  - {r: 0, g: 1, b: 0.9329295, a: 1}
+  - {r: 1, g: 0.36335683, b: 0, a: 1}
+  planeTrails:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   currLevel: 0
   menu: 0
 --- !u!4 &566132848

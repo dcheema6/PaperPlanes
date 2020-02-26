@@ -19,6 +19,8 @@ public class Menu : MonoBehaviour
     public Text trailButtonText;
     public Text goldText;
 
+    private MenuCamera mCam;
+
     private int[] colorCost = new int[] { 0, 5, 10, 15, 20, 25, 30, 35, 40, 50 };
     private int[] trailCost = new int[] { 0, 5, 20, 30, 40, 50, 60, 70, 80, 100 };
     private int selectedColorIndex;
@@ -35,6 +37,8 @@ public class Menu : MonoBehaviour
     
     void Start()
     {
+        // Grab the only one MenuCamera in the scene
+        mCam = FindObjectOfType<MenuCamera>();
         // Grab the only one CanvasGroup in the scene
         fade = FindObjectOfType<CanvasGroup>();
         // Start with a white screen
@@ -174,14 +178,17 @@ public class Menu : MonoBehaviour
             default:
             case 0:
                 menuPosition = Vector3.zero;
+                mCam.NavigateToMainMenu();
                 break;
             // Play menu
             case 1:
                 menuPosition = Vector3.right * 1280;
+                mCam.NavigateToLevel();
                 break;
             // Shop menu
             case 2:
                 menuPosition = Vector3.left * 1280;
+                mCam.NavigateToShop();
                 break;
         }
     }

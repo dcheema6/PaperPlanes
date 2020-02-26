@@ -4,15 +4,42 @@ using UnityEngine;
 
 public class MenuCamera : MonoBehaviour
 {
-    // Start is called before the first frame update
+    private Vector3 startPoint;
+    private Quaternion startRotation;
+
+    private Vector3 endPoint;
+    private Quaternion endRotation;
+
+    public Transform shopWayPoint;
+    public Transform levelWayPoint;
+
     void Start()
     {
-        
+        startPoint = endPoint = transform.localPosition;
+        startRotation = endRotation = transform.rotation;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        transform.localPosition = Vector3.Lerp(transform.localPosition, endPoint, 0.1f);
+        transform.localRotation = Quaternion.Lerp(transform.rotation, endRotation, 0.1f);
+    }
+
+    public void NavigateToMainMenu()
+    {
+        endPoint = startPoint;
+        endRotation = startRotation;
+    }
+
+    public void NavigateToShop()
+    {
+        endPoint = shopWayPoint.localPosition;
+        endRotation = shopWayPoint.localRotation;
+    }
+
+    public void NavigateToLevel()
+    {
+        endPoint = levelWayPoint.localPosition;
+        endRotation = levelWayPoint.localRotation;
     }
 }

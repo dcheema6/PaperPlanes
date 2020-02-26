@@ -162,16 +162,16 @@ MonoBehaviour:
   - {r: 0, g: 1, b: 0.9329295, a: 1}
   - {r: 1, g: 0.36335683, b: 0, a: 1}
   planeTrails:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 3211562182554091901, guid: 3c01063b3bf14dd47aa2b9fe19caae6a, type: 3}
+  - {fileID: 3211562182554091901, guid: 3c01063b3bf14dd47aa2b9fe19caae6a, type: 3}
+  - {fileID: 3211562182554091901, guid: 3c01063b3bf14dd47aa2b9fe19caae6a, type: 3}
+  - {fileID: 3211562182554091901, guid: 3c01063b3bf14dd47aa2b9fe19caae6a, type: 3}
+  - {fileID: 3211562182554091901, guid: 3c01063b3bf14dd47aa2b9fe19caae6a, type: 3}
+  - {fileID: 3211562182554091901, guid: 3c01063b3bf14dd47aa2b9fe19caae6a, type: 3}
+  - {fileID: 3211562182554091901, guid: 3c01063b3bf14dd47aa2b9fe19caae6a, type: 3}
+  - {fileID: 3211562182554091901, guid: 3c01063b3bf14dd47aa2b9fe19caae6a, type: 3}
+  - {fileID: 3211562182554091901, guid: 3c01063b3bf14dd47aa2b9fe19caae6a, type: 3}
+  - {fileID: 3211562182554091901, guid: 3c01063b3bf14dd47aa2b9fe19caae6a, type: 3}
   currLevel: 0
   menu: 0
 --- !u!4 &566132848

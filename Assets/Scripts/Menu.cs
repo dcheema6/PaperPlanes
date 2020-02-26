@@ -30,6 +30,8 @@ public class Menu : MonoBehaviour
 
     private Vector3 menuPosition;
 
+    private GameObject currTrail;
+
     public AnimationCurve levelEnterZoomCurve;
     private bool isLevelEnter = false;
     private float zoomTime = 3.0f;
@@ -209,8 +211,20 @@ public class Menu : MonoBehaviour
     private void SetTrail(int ind)
     {
         activeTrailIndex = ind;
-        trailButtonText.text = "Current";
         SaveManager.Instance.game.activeTrail = ind;
+        
+        if (currTrail != null)
+        {
+            Destroy(currTrail);
+        }
+        currTrail = Instantiate(GameManager.Instance.planeTrails[ind]) as GameObject;
+        currTrail.transform.SetParent(FindObjectOfType<MenuPlane>().transform);
+        // Fix scaling and rotation issues
+        currTrail.transform.localPosition = Vector3.zero;
+        currTrail.transform.localRotation = Quaternion.Euler(0,0,90);
+        currTrail.transform.localScale = Vector3.one * 0.01f;
+        
+        trailButtonText.text = "Current";
         SaveManager.Instance.Save();
     }
 

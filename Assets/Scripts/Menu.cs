@@ -36,6 +36,13 @@ public class Menu : MonoBehaviour
     private bool isLevelEnter = false;
     private float zoomTime = 3.0f;
     private float zoomTransition;
+
+    private Texture prevTrail;
+    private GameObject lastPreviewObject;
+
+    public Transform trailPreviewObject;
+    public RenderTexture trailPreviewTexture;
+
     
     void Start()
     {
@@ -135,13 +142,15 @@ public class Menu : MonoBehaviour
             Button b = t.GetComponent<Button> ();
             b.onClick.AddListener(() => OnTrailSelect(currInd));
             
-            Image img = t.GetComponent<Image>();
+            RawImage img = t.GetComponent<RawImage>();
             img.color = SaveManager.Instance.IsTrailOwned(i)
                 ? GameManager.Instance.planeColors[currInd]
                 : Color.Lerp(GameManager.Instance.planeColors[currInd], new Color(0,0,0,1), 0.3f);
 
             i++;
         }
+
+        prevTrail = trailPanel.GetChild(SaveManager.Instance.game.activeTrail).GetComponent<RawImage>().texture;
     }
 
     private void DoLevelTranstion()
@@ -285,7 +294,23 @@ public class Menu : MonoBehaviour
         // If already selected, exit
         if (selectedTrailIndex == i)
             return;
-        
+
+        // Preview trail
+        // Get the preview image
+        trailPanel.GetChild(selectedTrailIndex).GetComponent<RawImage>().texture = prevTrail;
+        // Keep new preview image
+        prevTrail = trailPanel.GetChild(i).GetComponent<RawImage>().texture;
+        // Set new trail preview to secondary camera
+        trailPanel.GetChild(i).GetComponent<RawImage>().texture = trailPreviewTexture;
+
+        if (lastPreviewObject != null)
+            Destroy(lastPreviewObject);
+        GameObject ptrail = GameManager.Instance.planeTrails[i];
+        ptrail.transform.localRotation = Quaternion.Euler(90,0,0);
+        lastPreviewObject = GameObject.Instantiate(ptrail) as GameObject;
+        lastPreviewObject.transform.SetParent(trailPreviewObject);
+        lastPreviewObject.transform.localPosition = Vector3.zero;
+
         // Highlight icon
         trailPanel.GetChild(i).GetComponent<RectTransform>().localScale = Vector3.one * 1.125f;
         // Previous one to normal scale
@@ -337,7 +362,7 @@ public class Menu : MonoBehaviour
             if (SaveManager.Instance.BuyTrail(selectedTrailIndex, trailCost[selectedTrailIndex]))
             {
                 SetTrail(selectedTrailIndex);
-                trailPanel.GetChild(selectedTrailIndex).GetComponent<Image>().color = Color.white;
+                trailPanel.GetChild(selectedTrailIndex).GetComponent<RawImage>().color = Color.white;
                 UpdateGoldText();
             }
             else
